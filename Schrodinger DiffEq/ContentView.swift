@@ -102,7 +102,7 @@ struct ContentView: View {
 //                                    Text("Variable Kronig - Penney").tag(HoldVariable.Orientation.Variable_Kronig)
 //                                    Text("KP2-a").tag(HoldVariable.Orientation.KP2_a)
 //                                }
-//                                
+//
 //                            }
 //                        }
 //                    }
@@ -225,12 +225,12 @@ struct ContentView: View {
 //print((2/C))
         schrodingersoln(C:C)//within this function, C is being called from where it is declared in the graph function, and pulled into the schrodinger soln function, maybe under a different name, which is why it is black instead of blue color font.
         
-//        var newfunctionalData: [[Double]]=[]
-//        for i in 0..<myfunctionalinstance.functionalData.count{
-//            newfunctionalData.append([myfunctionalinstance.functionalData[i].energyPoint, myfunctionalinstance.functionalData[i].FunctionalPoint])
-//        }
-//
-//        let _ = rootFinder(functionData: newfunctionalData, h: 0.0001, step: delta_x, C: C, function: calculatewavefxn)
+        var newfunctionalData: [[Double]]=[]
+        for i in 0..<myfunctionalinstance.functionalData.count{
+            newfunctionalData.append([myfunctionalinstance.functionalData[i].energyPoint, myfunctionalinstance.functionalData[i].FunctionalPoint])
+        }
+
+        let _ = rootFinder(functionData: newfunctionalData, h: 0.0001, step: delta_x, C: C, function: calculatewavefxn)
         
         
        // calculateExtrapolatedDifference(functionToDifferentiate: (Double,Double) -> Double, x: energy, h: 0.00001, C: C)
@@ -244,42 +244,7 @@ struct ContentView: View {
         setObjectWillChange(theObject: self.plotData)
         
     }
-    /* func findzeroes(){
-        
-        /*
-         Here's my thoughts to find the zeroes of the Functional graph. We can just approxmate the distance between two points as a linear line, which will be inaccurate, but will get more accurate the more granular E_step is. As such, we can just use y=mx+b, and solve for (x, 0). We find y=mx+b by taking the two points around the x-intercept, and finding the slope (i.e. (1,1) and (1.5, -2) -> (-2 - 1)/ (1.5 - 1) -> -6 = m.) Then we find b, by plugging in one of our coordinates (i.e. 1 = (-6)(1) + b -> b = 7). Then, we find x when y = 0 (i.e. 0 = -6(x) +7  -> (-7)/(-6) = 7/6 = x-intercept). Taken as a whole, the equation could be written as:
-         
-         (x1, y1); (x2, y2); (x0, 0) = x-intercept.
-         
-         b = y1 - m*x1 = y1 - ((y2-y1)/(x2-x1))*x1 ;
-         -b/m = (-(y1 - ((y2-y1)/(x2-x1))*x1))/((y2-y1)/(x2-x1)) = x0
-         */
-        
-        //Newton-raphson, or the bisection method. is basically what i did, except iterative, to get a more accurate approximation. steal more code from valentine'sday  USE THESE INSTEAD OF LINEAR.
-        
-        if myfunctionalinstance.functionalData.count >= 2 {
-            print(myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-2].FunctionalPoint.sign)
-            print(myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-1].FunctionalPoint.sign)
-            
-            if myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-2].FunctionalPoint.sign != myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-1].FunctionalPoint.sign {
-                x1 = myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-2].energyPoint
-                x2 = myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-1].energyPoint
-                y1 = myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-2].FunctionalPoint
-                y2 = myfunctionalinstance.functionalData[myfunctionalinstance.functionalData.count-1].FunctionalPoint
-                
-    
-                m = (y2-y1)/(x2-x1)
-                b = y1 - (m * x1)
-                
-                x0 = (-b) / m
-                x0array.append(x0)
-                print(x0array)
-                
-            }
-             
-        }
-    }
-    */
+
     
     
      /// calculateExtrapolatedDifference
@@ -315,30 +280,30 @@ struct ContentView: View {
 //
 //     }
 //
-//    func rootFinder(functionData: [[Double]], h: Double, step: Double, C: Double, function: rootFinderFunctionAlias) -> [Double]{
-//
-//        var quickSearchResult :[Double] = []
-//        var finalRoots :[Double] = []
-//
-//        var previousFunctionValue = functionData[0][1]
-//
-//        for item in functionData{
-//
-//            if(previousFunctionValue*item[1] <= 0){
-//
-//                quickSearchResult.append(item[0])
-//            }
-//
-//            previousFunctionValue = item[1]
-//
-//        }
-//       print(quickSearchResult) //not final roots, just area to search arround
-//
-//        //WORK ON THIS
-//
-//        for item in quickSearchResult{
-//
-//            var x = item - 2.0*step
+    func rootFinder(functionData: [[Double]], h: Double, step: Double, C: Double, function: rootFinderFunctionAlias) -> [Double]{
+
+        var quickSearchResult :[Double] = []
+        var finalRoots :[Double] = []
+
+        var previousFunctionValue = functionData[0][1]
+
+        for item in functionData{
+
+            if(previousFunctionValue*item[1] <= 0){
+
+                quickSearchResult.append(item[0])
+            }
+
+            previousFunctionValue = item[1]
+
+        }
+       print(quickSearchResult) //not final roots, just area to search arround
+
+        //WORK ON THIS
+
+        for item in quickSearchResult{
+
+            var x = item - 2.0*step
 
             //Newton-Raphson Search
 //           for _ in 0...10 {
@@ -360,14 +325,14 @@ struct ContentView: View {
 //
 //           }
 
-          //  finalRoots.append(x)
+            finalRoots.append(x)
 
 
-   //     }
+        }
         
-    //    return(finalRoots)
+        return(finalRoots)
         
-  //  }
+    }
    
     
 }
