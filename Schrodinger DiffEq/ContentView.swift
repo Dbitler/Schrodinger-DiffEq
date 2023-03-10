@@ -268,18 +268,18 @@ struct ContentView: View {
      ///   - h: Extrapolated Difference h term (The X-step/delta-x)
      /// - Returns: deriviative of the function
    
-//    func calculateExtrapolatedDifference(functionToDifferentiate: extrapolatedDifferenceFunction, x: Double, h: Double, C: Double)-> (Double) {
-//        delta_x = Double(delta_xstring)!
-//        let h = delta_x
-//        let C = -((2.0 * m_e) / pow(h_barc, 2.0)) * pow(1E-4,2)
-//         let extrapolatedDifferenceDerivativeNumerator = 8.0 * ( functionToDifferentiate(C, x + (h/4.0)) - functionToDifferentiate(C, x - (h/4.0))) - (functionToDifferentiate(C, x + (h/2.0)) - functionToDifferentiate(C, x - (h/2.0)))
-//
-//         let extrapolatedDifferenceDerivative = extrapolatedDifferenceDerivativeNumerator/(3.0*h)
-//
-//     return(extrapolatedDifferenceDerivative)
-//
-//     }
-//
+    func calculateExtrapolatedDifference(functionToDifferentiate: extrapolatedDifferenceFunction, x: Double, h: Double, C: Double)-> (Double) {
+        delta_x = Double(delta_xstring)!
+        //let h = delta_x
+        //let C = -((2.0 * m_e) / pow(h_barc, 2.0)) * pow(1E-4,2)
+         let extrapolatedDifferenceDerivativeNumerator = 8.0 * ( functionToDifferentiate(C, x + (h/4.0)) - functionToDifferentiate(C, x - (h/4.0))) - (functionToDifferentiate(C, x + (h/2.0)) - functionToDifferentiate(C, x - (h/2.0)))
+
+         let extrapolatedDifferenceDerivative = extrapolatedDifferenceDerivativeNumerator/(3.0*h)
+
+     return(extrapolatedDifferenceDerivative)
+
+     }
+
     func rootFinder(functionData: [[Double]], h: Double, step: Double, C: Double, function: rootFinderFunctionAlias) -> [Double]{
 
         var quickSearchResult :[Double] = []
@@ -306,31 +306,30 @@ struct ContentView: View {
             var x = item - 2.0*step
 
             //Newton-Raphson Search
-//           for _ in 0...10 {
-//                deltaX = -newtonRaphsonNumerator/newtonRaphsonDenominator
-//
-//                let newtonRaphsonNumerator = function(x, C)
-//
-//                // Extrapolated Difference
-//                let newtonRaphsonDenominator = calculateExtrapolatedDifference(functionToDifferentiate: function, x: x, h: h, C: C)
-//
-//                let d
-//                x = x + deltaX
-//
-//                if abs(deltaX) <= x.ulp {
-//
-//                    break
-//
-//                }
-//
-//           }
+           for _ in 0...10 {
+
+                let newtonRaphsonNumerator = function(x, C)
+
+                // Extrapolated Difference
+                let newtonRaphsonDenominator = calculateExtrapolatedDifference(functionToDifferentiate: function, x: x, h: h, C: C)
+
+                let deltaX = -newtonRaphsonNumerator/newtonRaphsonDenominator
+                x = x + deltaX
+
+                if abs(deltaX) <= x.ulp {
+
+                    break
+
+                }
+
+           }
 
             finalRoots.append(x)
 
 
         }
-        
-        return(finalRoots)
+        print(finalRoots)
+        return(finalRoots) //WORKS
         
     }
    
