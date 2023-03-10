@@ -16,6 +16,7 @@ struct ContentView: View {
     @ObservedObject var myfunctionalinstance = Functional()
     @ObservedObject var mypotentialinstance = Potential()
     @ObservedObject var mywavefxnvariableinstance = Wavefunctions()
+    @ObservedObject var mysolutioninstance = Solutions()
     @ObservedObject var myholdvariableinstance = HoldVariable()
     @EnvironmentObject var plotData :PlotClass
     //@State var plotData = [PlotDataStruct]()
@@ -203,7 +204,7 @@ struct ContentView: View {
         
         for energy in stride(from: E0, to: E_max, by: E_step) {
             let _ = calculatewavefxn(C, energy)
-            print(mywavefxnvariableinstance.wavefxnData)
+           // print(mywavefxnvariableinstance.wavefxnData)
             
             
             let functionalpoint = mywavefxnvariableinstance.wavefxnData[ mywavefxnvariableinstance.wavefxnData.count-1].PsiPoint - 0.0
@@ -297,7 +298,7 @@ struct ContentView: View {
             previousFunctionValue = item[1]
 
         }
-       print(quickSearchResult) //not final roots, just area to search arround
+      // print(quickSearchResult) //not final roots, just area to search arround
 
         //WORK ON THIS
 

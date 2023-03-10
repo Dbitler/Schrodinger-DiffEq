@@ -47,6 +47,9 @@
 		AB930FD229BBF16800A18FF7 /* PlotDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB930FB329BBF16800A18FF7 /* PlotDataClass.swift */; };
 		AB930FD329BBF16800A18FF7 /* PlotDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB930FB329BBF16800A18FF7 /* PlotDataClass.swift */; };
 		AB930FD429BBF16800A18FF7 /* PlotDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB930FB329BBF16800A18FF7 /* PlotDataClass.swift */; };
+		AB93101129BBF87C00A18FF7 /* Solutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB93101029BBF87C00A18FF7 /* Solutions.swift */; };
+		AB93101229BBF87C00A18FF7 /* Solutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB93101029BBF87C00A18FF7 /* Solutions.swift */; };
+		AB93101329BBF87C00A18FF7 /* Solutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB93101029BBF87C00A18FF7 /* Solutions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +92,7 @@
 		AB930FB129BBF16800A18FF7 /* Wavefunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wavefunctions.swift; sourceTree = "<group>"; };
 		AB930FB229BBF16800A18FF7 /* DrawingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		AB930FB329BBF16800A18FF7 /* PlotDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlotDataClass.swift; sourceTree = "<group>"; };
+		AB93101029BBF87C00A18FF7 /* Solutions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solutions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +156,7 @@
 				AB930FB129BBF16800A18FF7 /* Wavefunctions.swift */,
 				AB930F7E29BBF11D00A18FF7 /* Schrodinger_DiffEqApp.swift */,
 				AB930F8029BBF11D00A18FF7 /* ContentView.swift */,
+				AB93101029BBF87C00A18FF7 /* Solutions.swift */,
 				AB930F8229BBF11E00A18FF7 /* Assets.xcassets */,
 				AB930F8429BBF11E00A18FF7 /* Schrodinger_DiffEq.entitlements */,
 				AB930F8529BBF11E00A18FF7 /* Preview Content */,
@@ -324,6 +329,7 @@
 				AB930F8129BBF11D00A18FF7 /* ContentView.swift in Sources */,
 				AB930FB729BBF16800A18FF7 /* PlotDataStruct.swift in Sources */,
 				AB930F7F29BBF11D00A18FF7 /* Schrodinger_DiffEqApp.swift in Sources */,
+				AB93101129BBF87C00A18FF7 /* Solutions.swift in Sources */,
 				AB930FB429BBF16800A18FF7 /* ChangingPlotParameters.swift in Sources */,
 				AB930FBA29BBF16800A18FF7 /* BoundingBoxParameters.swift in Sources */,
 				AB930FC629BBF16800A18FF7 /* PlotClass.swift in Sources */,
@@ -343,6 +349,7 @@
 				AB930FBB29BBF16800A18FF7 /* BoundingBoxParameters.swift in Sources */,
 				AB930FBE29BBF16800A18FF7 /* HoldVariable.swift in Sources */,
 				AB930F9129BBF11E00A18FF7 /* Schrodinger_DiffEqTests.swift in Sources */,
+				AB93101229BBF87C00A18FF7 /* Solutions.swift in Sources */,
 				AB930FB529BBF16800A18FF7 /* ChangingPlotParameters.swift in Sources */,
 				AB930FD029BBF16800A18FF7 /* DrawingView.swift in Sources */,
 				AB930FC729BBF16800A18FF7 /* PlotClass.swift in Sources */,
@@ -363,6 +370,7 @@
 				AB930F9D29BBF11E00A18FF7 /* Schrodinger_DiffEqUITestsLaunchTests.swift in Sources */,
 				AB930FB929BBF16800A18FF7 /* PlotDataStruct.swift in Sources */,
 				AB930F9B29BBF11E00A18FF7 /* Schrodinger_DiffEqUITests.swift in Sources */,
+				AB93101329BBF87C00A18FF7 /* Solutions.swift in Sources */,
 				AB930FB629BBF16800A18FF7 /* ChangingPlotParameters.swift in Sources */,
 				AB930FBC29BBF16800A18FF7 /* BoundingBoxParameters.swift in Sources */,
 				AB930FC829BBF16800A18FF7 /* PlotClass.swift in Sources */,
