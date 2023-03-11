@@ -58,6 +58,7 @@ struct ContentView: View {
     @State var E_stepstring = "0.05" //also an input.
     
     
+    
 //    @State var x1 = 0.0
 //    @State var x2 = 0.0
 //    @State var x0 = 0.0
@@ -133,7 +134,7 @@ struct ContentView: View {
                 .padding()
                 Text($plotData.plotArray[selector].changingPlotParameters.xLabel.wrappedValue)
                     .foregroundColor(.red)
-                //Text("Zeroes of the Function: \(x0array)")
+                //Text("Zeroes of the Function: ")
              }
             }
             
@@ -231,8 +232,20 @@ struct ContentView: View {
             newfunctionalData.append([myfunctionalinstance.functionalData[i].energyPoint, myfunctionalinstance.functionalData[i].FunctionalPoint])
         }
 
-        let _ = rootFinder(functionData: newfunctionalData, h: 0.0001, step: delta_x, C: C, function: calculatewavefxn)
+        let answers = rootFinder(functionData: newfunctionalData, h: 0.0001, step: delta_x, C: C, function: calculatewavefxn)
         
+        for item in answers {
+            mywavefxnvariableinstance.wavefxnData = []
+            mywavefxnvariableinstance.wavefxnprimeData = []
+            mywavefxnvariableinstance.wavefxndoubleprimeData = []
+            
+         let _ =  calculatewavefxn(C, item)
+            mysolutioninstance.solutionData.append((EnergyPoint: item, Wavefunction: mywavefxnvariableinstance.wavefxnData))
+            
+          
+            
+        }
+        print(mysolutioninstance.solutionData)
         
        // calculateExtrapolatedDifference(functionToDifferentiate: (Double,Double) -> Double, x: energy, h: 0.00001, C: C)
         self.plotData.plotArray[0].plotData = []
