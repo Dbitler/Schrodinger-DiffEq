@@ -24,6 +24,7 @@ struct ContentView: View {
     @State var isChecked:Bool = false
     @State var tempInput = ""
     @State var selector = 0
+    @State var outputText = ""
     @MainActor func setObjectWillChange(theObject:PlotClass){
         
         theObject.objectWillChange.send()
@@ -113,6 +114,9 @@ struct ContentView: View {
                 Button(action: self.graph) {
                     Text("Calculate")
                 }
+                Button(action: self.printAnswers) {
+                    Text("PrintAnswers")
+                }
             }
             VStack{
                 Chart($plotData.plotArray[selector].plotData.wrappedValue) {
@@ -134,13 +138,18 @@ struct ContentView: View {
                 .padding()
                 Text($plotData.plotArray[selector].changingPlotParameters.xLabel.wrappedValue)
                     .foregroundColor(.red)
-                //Text("Zeroes of the Function: ")
+                Text("Zeroes of the Function: ")
+                TextEditor(text: $outputText)
+                
              }
             }
             
         }
     
-
+    func printAnswers(){
+        print($mypotentialinstance.PotentialData.wrappedValue)
+        
+    }
     
     //referenced by schrodingersoln
    func calculatewavefxn(_ C: Double, _ energy: Double) -> Double {
@@ -242,10 +251,16 @@ struct ContentView: View {
          let _ =  calculatewavefxn(C, item)
             mysolutioninstance.solutionData.append((EnergyPoint: item, Wavefunction: mywavefxnvariableinstance.wavefxnData))
             
-          
             
         }
-        print(mysolutioninstance.solutionData)
+        
+        myholdvariableinstance.pickerAnswers = answers
+        
+        for item in answers {
+            outputText += "Energy = \(item) eV\n"
+            
+        }
+        
         
        // calculateExtrapolatedDifference(functionToDifferentiate: (Double,Double) -> Double, x: energy, h: 0.00001, C: C)
         self.plotData.plotArray[0].plotData = []
