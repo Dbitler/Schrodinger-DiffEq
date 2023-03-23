@@ -194,6 +194,7 @@ struct ContentView: View {
         
         /* at the boundaries of the bounding box, psi_0 = 0, and psi_L = 0.
          */
+        outputText = ""
         delta_x = Double(delta_xstring)!
          E0 = Double(E0string)!
         E_max = Double(E_maxstring)!
