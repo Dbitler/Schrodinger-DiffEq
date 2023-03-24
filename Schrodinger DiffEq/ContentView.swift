@@ -47,7 +47,7 @@ struct ContentView: View {
     @State var x_maxstring = "10.0"
     @State var x_minstring = "0.0"
     @State var length = 10.0
-    @State var potential = 0.0
+   // @State var potential = 0.0
     @State var psi_doubleprime_n = 0.0
     @State var m_e = 510998.950 //MeV/c^2 (0.51 MeV)v FIX THESEE UNITS   eV* s^2/(eV^2 * s^2 * m^2) = 1/eV * m^2
     @State var h_barc = 0.1973269804 //eV⋅μm
@@ -85,31 +85,31 @@ struct ContentView: View {
                     TextField("E-min", text: $E0string)
                     TextField("E-max", text: $E_maxstring)
                 }
-//                HStack{
-//                    VStack{
-//                        List {
-//                            Picker("Potential", selection: $myholdvariableinstance.selectedOrientation) {
-//                                Group{
-//                                    Text("Square Well").tag(HoldVariable.Orientation.Square_well)
-//                                    Text("Linear Well").tag(HoldVariable.Orientation.Linear_well)
-//                                    Text("Parabolic Well").tag(HoldVariable.Orientation.Parabolic_Well)
-//                                    Text("Square + Linear Well").tag(HoldVariable.Orientation.Square_barrier)
-//                                }
-//                                Group{
-//                                    Text("Square Barrier").tag(HoldVariable.Orientation.Square_barrier)
-//                                    Text("Triangle Barrier").tag(HoldVariable.Orientation.Triangle_barrier)
-//                                    Text("Coupled Parabolic Well").tag(HoldVariable.Orientation.Coupled_Parabolic_Well)
-//                                    Text("Coupled Square Well + Field").tag(HoldVariable.Orientation.Coupled_Square_Well_Field)
-//                                    Text("Harmonic Oscillator").tag(HoldVariable.Orientation.Harmonic_Oscillator)
-//                                    Text("Kronig + Penney").tag(HoldVariable.Orientation.Kronig_penney)
-//                                    Text("Variable Kronig - Penney").tag(HoldVariable.Orientation.Variable_Kronig)
-//                                    Text("KP2-a").tag(HoldVariable.Orientation.KP2_a)
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                }
+                HStack{
+                    VStack{
+                        List {
+                            Picker("Potential", selection: $myholdvariableinstance.selectedOrientation) {
+                                Group{
+                                    Text("Square Well").tag(HoldVariable.Orientation.Square_well)
+                                    Text("Linear Well").tag(HoldVariable.Orientation.Linear_well)
+                                    Text("Parabolic Well").tag(HoldVariable.Orientation.Parabolic_Well)
+                                    Text("Square + Linear Well").tag(HoldVariable.Orientation.Squarelinear_barrier)
+                                }
+                                Group{
+                                    Text("Square Barrier").tag(HoldVariable.Orientation.Square_barrier)
+                                    Text("Triangle Barrier").tag(HoldVariable.Orientation.Triangle_barrier)
+                                    Text("Coupled Parabolic Well").tag(HoldVariable.Orientation.Coupled_Parabolic_Well)
+                                    Text("Coupled Square Well + Field").tag(HoldVariable.Orientation.Coupled_Square_Well_Field)
+                                    Text("Harmonic Oscillator").tag(HoldVariable.Orientation.Harmonic_Oscillator)
+                                    Text("Kronig + Penney").tag(HoldVariable.Orientation.Kronig_penney)
+                                    Text("Variable Kronig - Penney").tag(HoldVariable.Orientation.Variable_Kronig)
+                                    Text("KP2-a").tag(HoldVariable.Orientation.KP2_a)
+                                }
+
+                            }
+                        }
+                    }
+                }
                 
                 Button(action: self.graph) {
                     Text("Calculate")
@@ -200,7 +200,7 @@ struct ContentView: View {
         E_max = Double(E_maxstring)!
         psi_prime_n = 5
         E_step = Double(E_stepstring)!
-
+        mypotentialinstance.getPotential(potentialType: myholdvariableinstance.selectedOrientation.rawValue, xMin: x_min, xMax: x_max, xStep: delta_x)
         
         
         mypotentialinstance.PotentialData = []

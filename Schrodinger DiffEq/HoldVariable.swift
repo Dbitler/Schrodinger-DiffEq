@@ -16,13 +16,14 @@ class HoldVariable: ObservableObject {
     @Published var pickerAnswerText = "jeff"
     
     
+    
     enum Orientation: String, CaseIterable, Identifiable {
-        case XY, XZ, YZ
+        case Square_well, Linear_well, Parabolic_Well, Square_barrier, Squarelinear_barrier, Triangle_barrier, Coupled_Parabolic_Well, Coupled_Square_Well_Field, Harmonic_Oscillator, Kronig_penney, Variable_Kronig, KP2_a
         var id: Self { self }
     }
     
     
-    @Published var selectedOrientation: Orientation = .XY
+    @Published var selectedOrientation: Orientation = .Square_well
     
     var xmaxstring = ""
     var xminstring = ""

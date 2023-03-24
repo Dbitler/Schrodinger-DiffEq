@@ -9,29 +9,38 @@ import SwiftUI
 
 class Potential: ObservableObject {
     @Published var PotentialData = [(xPoint: Double, PotentialPoint: Double)]()
+    @Published var xOffset = 0.0
+    
     
     
     func particleinaboxcalc(xmin: Double, xmax: Double, delta_x: Double) {
         
-        for x in stride(from: xmin, through: xmax, by: delta_x){
-            if x == xmin || x == xmax  {
-                PotentialData.append((xPoint: x, PotentialPoint: 1000000000.0))
-            }
-            else {
-                PotentialData.append((xPoint: x, PotentialPoint: 0.0))
-            }
+        startPotential(xMin: xmin, xMax: xmax, xStep: delta_x)
+        
+        for x in stride(from: xmin + delta_x, to: xmax, by: delta_x){
+            PotentialData.append((xPoint: x, PotentialPoint: 0.0))
         }
+        finishPotential(xMin: xmin, xMax: xmax, xStep: delta_x)
     }
-    /*
+    
+    func startPotential(xMin: Double, xMax: Double, xStep: Double){
+        PotentialData.append((xPoint: xMin, PotentialPoint: 1000000000.0))
+        
+    }
+    func finishPotential(xMin: Double, xMax: Double, xStep: Double){
+        PotentialData.append((xPoint: xMax, PotentialPoint: 1000000000.0))
+        
+    }
+
     func getPotential(potentialType: String, xMin: Double, xMax: Double, xStep: Double)
       {
-          potential.oneDPotentialArray.removeAll()
-          potential.oneDPotentialXArray.removeAll()
-          potential.oneDPotentialYArray.removeAll()
+          PotentialData.removeAll()
+          PotentialData.removeAll()
+          PotentialData.removeAll()
           
           xOffset = 0.0
           
-          var dataPoint: plotDataType = [:]
+    
           var count = 0
           
           switch potentialType {
@@ -39,17 +48,31 @@ class Potential: ObservableObject {
               
                   startPotential(xMin: xMin, xMax: xMax, xStep: xStep)
                   
-              for i in stride(from: xMin+xStep, through: xMax-xStep, by: xStep) {
+              for x in stride(from: xMin+xStep, through: xMax-xStep, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.append((xPoint: x, PotentialPoint: 0.0))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
               }
                   
                   finishPotential(xMin: xMin, xMax: xMax, xStep: xStep)
+//
+//              startPotential(xMin: xMin, xMax: xMax, xStep: xStep)
+//
+//          for i in stride(from: xMin+xStep, through: xMax-xStep, by: xStep) {
+//
+//              PotentialData.append(i)
+//              PotentialData.append(0.0)
+//
+//              count = PotentialData.oneDPotentialXArray.count
+//              dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
+//              contentArray.append(dataPoint)
+//          }
+//
+//              finishPotential(xMin: xMin, xMax: xMax, xStep: xStep)
+//
               
               
           case "Linear Well":
@@ -58,12 +81,12 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, through: xMax-xStep, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append((i-xMin)*4.0*1.3)
-                  //potential.oneDPotentialYArray.append((i-xMin)*0.25)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append((i-xMin)*4.0*1.3)
+                  //PotentialData.oneDPotentialYArray.append((i-xMin)*0.25)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
@@ -76,11 +99,11 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, through: xMax-xStep, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append((pow((i-(xMax+xMin)/2.0), 2.0)/1.0))
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append((pow((i-(xMax+xMin)/2.0), 2.0)/1.0))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
 
               }
@@ -93,22 +116,22 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, to: (xMax+xMin)/2.0, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
               
               for i in stride(from: (xMin+xMax)/2.0, through: xMax-xStep, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(((i-(xMin+xMax)/2.0)*4.0*0.1))
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(((i-(xMin+xMax)/2.0)*4.0*0.1))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
@@ -122,33 +145,33 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, to: xMin + (xMax-xMin)*0.4, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.4, to: xMin + (xMax-xMin)*0.6, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(15.000000001)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(15.000000001)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.6, to: xMax, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
               }
               
@@ -163,43 +186,43 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, to: xMin + (xMax-xMin)*0.4, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.4, to: xMin + (xMax-xMin)*0.5, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append((abs(i-(xMin + (xMax-xMin)*0.4))*3.0))
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append((abs(i-(xMin + (xMax-xMin)*0.4))*3.0))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.5, to: xMin + (xMax-xMin)*0.6, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append((abs(i-(xMax - (xMax-xMin)*0.4))*3.0))
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append((abs(i-(xMax - (xMax-xMin)*0.4))*3.0))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
 
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.6, to: xMax, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
               }
               
@@ -214,22 +237,22 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, to: xMin + (xMax-xMin)*0.5, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append((pow((i-(xMin+(xMax-xMin)/4.0)), 2.0)))
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append((pow((i-(xMin+(xMax-xMin)/4.0)), 2.0)))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.5, through: xMax-xStep, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append((pow((i-(xMax-(xMax-xMin)/4.0)), 2.0)))
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append((pow((i-(xMax-(xMax-xMin)/4.0)), 2.0)))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
                   
               }
@@ -244,29 +267,29 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMin+xStep, to: xMin + (xMax-xMin)*0.4, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.4, to: xMin + (xMax-xMin)*0.6, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(4.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(4.0)
                   
               }
               
               for i in stride(from: xMin + (xMax-xMin)*0.6, to: xMax, by: xStep) {
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
       
               }
               
-              for i in 1 ..< (potential.oneDPotentialXArray.count) {
+              for i in 1 ..< (PotentialData.oneDPotentialXArray.count) {
                   
-                  potential.oneDPotentialYArray[i] += ((potential.oneDPotentialXArray[i]-xMin)*4.0*0.1)
-                  dataPoint = [.X: potential.oneDPotentialXArray[i], .Y: potential.oneDPotentialYArray[i]]
+                  PotentialData.oneDPotentialYArray[i] += ((PotentialData.oneDPotentialXArray[i]-xMin)*4.0*0.1)
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[i], .Y: PotentialData.oneDPotentialYArray[i]]
                   contentArray.append(dataPoint)
               }
               
@@ -286,11 +309,11 @@ class Potential: ObservableObject {
               
               for i in stride(from: xMinHO+xStepHO, through: xMaxHO-xStepHO, by: xStepHO) {
                   
-                  potential.oneDPotentialXArray.append(i+xMaxHO)
-                  potential.oneDPotentialYArray.append((pow((i-(xMaxHO+xMinHO)/2.0), 2.0)/15.0))
+                  PotentialData.oneDPotentialXArray.append(i+xMaxHO)
+                  PotentialData.oneDPotentialYArray.append((pow((i-(xMaxHO+xMinHO)/2.0), 2.0)/15.0))
                   
-                  count = potential.oneDPotentialXArray.count
-                  dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                  count = PotentialData.oneDPotentialXArray.count
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                   contentArray.append(dataPoint)
               }
               
@@ -327,13 +350,13 @@ class Potential: ObservableObject {
                       
                       inBarrier = true
                       
-                      potential.oneDPotentialArray.append((xCoord: i, Potential: barrierPotential))
+                      PotentialData.oneDPotentialArray.append((xCoord: i, Potential: barrierPotential))
                       
-                      potential.oneDPotentialXArray.append(i)
-                      potential.oneDPotentialYArray.append(barrierPotential)
+                      PotentialData.oneDPotentialXArray.append(i)
+                      PotentialData.oneDPotentialYArray.append(barrierPotential)
                       
-                      count = potential.oneDPotentialXArray.count
-                      dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                      count = PotentialData.oneDPotentialXArray.count
+                      dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                       contentArray.append(dataPoint)
                       
                       
@@ -347,11 +370,11 @@ class Potential: ObservableObject {
                           
                       }
                       
-                      potential.oneDPotentialXArray.append(i)
-                      potential.oneDPotentialYArray.append(0.0)
+                      PotentialData.oneDPotentialXArray.append(i)
+                      PotentialData.oneDPotentialYArray.append(0.0)
                       
-                      count = potential.oneDPotentialXArray.count
-                      dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+                      count = PotentialData.oneDPotentialXArray.count
+                      dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
                       contentArray.append(dataPoint)
                       
                       
@@ -360,20 +383,20 @@ class Potential: ObservableObject {
                   
               }
               
-              potential.oneDPotentialXArray.append(xMax)
-              potential.oneDPotentialYArray.append(5000000.0)
+              PotentialData.oneDPotentialXArray.append(xMax)
+              PotentialData.oneDPotentialYArray.append(5000000.0)
               
-              dataPoint = [.X: potential.oneDPotentialXArray[count-1], .Y: potential.oneDPotentialYArray[count-1]]
+              dataPoint = [.X: PotentialData.oneDPotentialXArray[count-1], .Y: PotentialData.oneDPotentialYArray[count-1]]
               contentArray.append(dataPoint)
               
               /** Fixes Bug In Plotting Library not displaying the last point **/
               dataPoint = [.X: xMax+xStep, .Y: 5000000.0]
               contentArray.append(dataPoint)
               
-              let xMin = potential.minX(minArray: potential.oneDPotentialXArray)
-              let xMax = potential.maxX(maxArray: potential.oneDPotentialXArray)
-              let yMin = potential.minY(minArray: potential.oneDPotentialYArray)
-              var yMax = potential.maxY(maxArray: potential.oneDPotentialYArray)
+              let xMin = PotentialData.minX(minArray: PotentialData.oneDPotentialXArray)
+              let xMax = PotentialData.maxX(maxArray: PotentialData.oneDPotentialXArray)
+              let yMin = PotentialData.minY(minArray: PotentialData.oneDPotentialYArray)
+              var yMax = PotentialData.maxY(maxArray: PotentialData.oneDPotentialYArray)
               
               if yMax > 500 { yMax = 10}
               
@@ -412,8 +435,8 @@ class Potential: ObservableObject {
               let xManKP = boxLength
               
               
-              potential.oneDPotentialArray.append((xCoord: xMinKP, Potential: 5000000.0))
-              dataPoint = [.X: potential.oneDPotentialArray[0].xCoord, .Y: potential.oneDPotentialArray[0].Potential]
+              PotentialData.oneDPotentialArray.append((xCoord: xMinKP, Potential: 5000000.0))
+              dataPoint = [.X: PotentialData.oneDPotentialArray[0].xCoord, .Y: PotentialData.oneDPotentialArray[0].Potential]
               contentArray.append(dataPoint)
               
               for i in stride(from: xMinKP+xStepKP, through: xManKP-xStepKP, by: xStepKP) {
@@ -426,10 +449,10 @@ class Potential: ObservableObject {
                       
                       inBarrier = true
                       
-                      potential.oneDPotentialArray.append((xCoord: i, Potential: barrierPotential))
+                      PotentialData.oneDPotentialArray.append((xCoord: i, Potential: barrierPotential))
                       
-                      let count = potential.oneDPotentialArray.count - 1
-                      let dataPoint: plotDataType = [.X: potential.oneDPotentialArray[count].xCoord, .Y: potential.oneDPotentialArray[count].Potential]
+                      let count = PotentialData.oneDPotentialArray.count - 1
+                      let dataPoint: plotDataType = [.X: PotentialData.oneDPotentialArray[count].xCoord, .Y: PotentialData.oneDPotentialArray[count].Potential]
                       contentArray.append(dataPoint)
                       
                   }
@@ -442,10 +465,10 @@ class Potential: ObservableObject {
                           
                       }
                       
-                      potential.oneDPotentialArray.append((xCoord: i, Potential: 0.0))
+                      PotentialData.oneDPotentialArray.append((xCoord: i, Potential: 0.0))
                       
-                      let count = potential.oneDPotentialArray.count - 1
-                      let dataPoint: plotDataType = [.X: potential.oneDPotentialArray[count].xCoord, .Y: potential.oneDPotentialArray[count].Potential]
+                      let count = PotentialData.oneDPotentialArray.count - 1
+                      let dataPoint: plotDataType = [.X: PotentialData.oneDPotentialArray[count].xCoord, .Y: PotentialData.oneDPotentialArray[count].Potential]
                       contentArray.append(dataPoint)
                       
                       
@@ -454,19 +477,19 @@ class Potential: ObservableObject {
                   
               }
               
-              count = potential.oneDPotentialArray.count
-              potential.oneDPotentialArray.append((xCoord: xManKP, Potential: 5000000.0))
-              dataPoint = [.X: potential.oneDPotentialArray[count-1].xCoord, .Y: potential.oneDPotentialArray[count-1].Potential]
+              count = PotentialData.oneDPotentialArray.count
+              PotentialData.oneDPotentialArray.append((xCoord: xManKP, Potential: 5000000.0))
+              dataPoint = [.X: PotentialData.oneDPotentialArray[count-1].xCoord, .Y: PotentialData.oneDPotentialArray[count-1].Potential]
               contentArray.append(dataPoint)
               
               /** Fixes Bug In Plotting Library not displaying the last point **/
               dataPoint = [.X: xManKP+xStepKP, .Y: 5000000]
               contentArray.append(dataPoint)
               
-              let xMin = potential.minX(minArray: potential.oneDPotentialXArray)
-              let xMax = potential.maxX(maxArray: potential.oneDPotentialXArray)
-              let yMin = potential.minY(minArray: potential.oneDPotentialYArray)
-              var yMax = potential.maxY(maxArray: potential.oneDPotentialYArray)
+              let xMin = PotentialData.minX(minArray: PotentialData.oneDPotentialXArray)
+              let xMax = PotentialData.maxX(maxArray: PotentialData.oneDPotentialXArray)
+              let yMin = PotentialData.minY(minArray: PotentialData.oneDPotentialYArray)
+              var yMax = PotentialData.maxY(maxArray: PotentialData.oneDPotentialYArray)
               
               if yMax > 500 { yMax = 10}
               
@@ -498,26 +521,26 @@ class Potential: ObservableObject {
                   
                   for index in 0..<xArray.count {
                       
-                      potential.oneDPotentialXArray.append(Double(xArray[index])!)
-                      potential.oneDPotentialYArray.append(Double(yArray[index])!)
+                      PotentialData.oneDPotentialXArray.append(Double(xArray[index])!)
+                      PotentialData.oneDPotentialYArray.append(Double(yArray[index])!)
                       
                   }
 
-                  let xMin = potential.minX(minArray: potential.oneDPotentialXArray)
-                  let xMax = potential.maxX(maxArray: potential.oneDPotentialXArray)
-                  let yMin = potential.minY(minArray: potential.oneDPotentialYArray)
-                  var yMax = potential.maxY(maxArray: potential.oneDPotentialYArray)
+                  let xMin = PotentialData.minX(minArray: PotentialData.oneDPotentialXArray)
+                  let xMax = PotentialData.maxX(maxArray: PotentialData.oneDPotentialXArray)
+                  let yMin = PotentialData.minY(minArray: PotentialData.oneDPotentialYArray)
+                  var yMax = PotentialData.maxY(maxArray: PotentialData.oneDPotentialYArray)
                   
                   if (xMin < 0.0) {
                       
                       xOffset = -xMin
                       
-                      for i in 0..<potential.oneDPotentialXArray.count {
+                      for i in 0..<PotentialData.oneDPotentialXArray.count {
                           
-                          dataPoint = [.X: potential.oneDPotentialXArray[i], .Y: potential.oneDPotentialYArray[i]]
+                          dataPoint = [.X: PotentialData.oneDPotentialXArray[i], .Y: PotentialData.oneDPotentialYArray[i]]
                           contentArray.append(dataPoint)
                           
-                          potential.oneDPotentialXArray[i] += xOffset
+                          PotentialData.oneDPotentialXArray[i] += xOffset
                           
                       }
                       
@@ -578,11 +601,11 @@ class Potential: ObservableObject {
                   
                   inBarrier = true
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(barrierPotential)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(barrierPotential)
                   
-                  count = potential.oneDPotentialXArray.count - 1
-                  dataPoint = [.X: potential.oneDPotentialXArray[count], .Y: potential.oneDPotentialYArray[count]]
+                  count = PotentialData.oneDPotentialXArray.count - 1
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count], .Y: PotentialData.oneDPotentialYArray[count]]
                   contentArray.append(dataPoint)
                   
               }
@@ -595,11 +618,11 @@ class Potential: ObservableObject {
                       
                   }
                   
-                  potential.oneDPotentialXArray.append(i)
-                  potential.oneDPotentialYArray.append(0.0)
+                  PotentialData.oneDPotentialXArray.append(i)
+                  PotentialData.oneDPotentialYArray.append(0.0)
                   
-                  count = potential.oneDPotentialXArray.count - 1
-                  dataPoint = [.X: potential.oneDPotentialXArray[count], .Y: potential.oneDPotentialYArray[count]]
+                  count = PotentialData.oneDPotentialXArray.count - 1
+                  dataPoint = [.X: PotentialData.oneDPotentialXArray[count], .Y: PotentialData.oneDPotentialYArray[count]]
                   contentArray.append(dataPoint)
                   
                   
@@ -608,20 +631,20 @@ class Potential: ObservableObject {
               
           }
           
-          count = potential.oneDPotentialXArray.count-1
-          potential.oneDPotentialXArray.append(xMaxKP)
-          potential.oneDPotentialYArray.append(5000000.0)
-          dataPoint = [.X: potential.oneDPotentialXArray[count], .Y: potential.oneDPotentialYArray[count]]
+          count = PotentialData.oneDPotentialXArray.count-1
+          PotentialData.oneDPotentialXArray.append(xMaxKP)
+          PotentialData.oneDPotentialYArray.append(5000000.0)
+          dataPoint = [.X: PotentialData.oneDPotentialXArray[count], .Y: PotentialData.oneDPotentialYArray[count]]
           contentArray.append(dataPoint)
           
           /** Fixes Bug In Plotting Library not displaying the last point **/
           dataPoint = [.X: xMaxKP+xStepKP, .Y: 5000000]
           contentArray.append(dataPoint)
           
-          let xMin = potential.minX(minArray: potential.oneDPotentialXArray)
-          let xMax = potential.maxX(maxArray: potential.oneDPotentialXArray)
-          let yMin = potential.minY(minArray: potential.oneDPotentialYArray)
-          var yMax = potential.maxY(maxArray: potential.oneDPotentialYArray)
+          let xMin = PotentialData.minX(minArray: PotentialData.oneDPotentialXArray)
+          let xMax = PotentialData.maxX(maxArray: PotentialData.oneDPotentialXArray)
+          let yMin = PotentialData.minY(minArray: PotentialData.oneDPotentialYArray)
+          var yMax = PotentialData.maxY(maxArray: PotentialData.oneDPotentialYArray)
           
           if yMax > 500 { yMax = 10}
           
@@ -630,6 +653,6 @@ class Potential: ObservableObject {
           contentArray.removeAll()
           
       }
-*/
+
 }
 
