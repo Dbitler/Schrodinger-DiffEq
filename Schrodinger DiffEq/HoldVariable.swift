@@ -21,9 +21,15 @@ class HoldVariable: ObservableObject {
         case Square_well, Linear_well, Parabolic_Well, Square_barrier, Squarelinear_barrier, Triangle_barrier, Coupled_Parabolic_Well, Coupled_Square_Well_Field, Harmonic_Oscillator, Kronig_penney, Variable_Kronig, KP2_a
         var id: Self { self }
     }
+    enum Plot: String, CaseIterable, Identifiable {
+        case Functional, Potential, Wave_Function
+        var id: Self { self }
+    }
     
     
     @Published var selectedOrientation: Orientation = .Square_well
+    @Published var selectedPlot: Plot = .Functional
+
     
     var xmaxstring = ""
     var xminstring = ""

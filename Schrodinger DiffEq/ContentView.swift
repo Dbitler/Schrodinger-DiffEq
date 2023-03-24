@@ -46,17 +46,19 @@ struct ContentView: View {
     @State var x_min = 0.0
     @State var x_maxstring = "10.0"
     @State var x_minstring = "0.0"
-    @State var length = 10.0
    // @State var potential = 0.0
     @State var psi_doubleprime_n = 0.0
+    
     @State var m_e = 510998.950 //MeV/c^2 (0.51 MeV)v FIX THESEE UNITS   eV* s^2/(eV^2 * s^2 * m^2) = 1/eV * m^2
     @State var h_barc = 0.1973269804 //eV⋅μm
+    
     @State var E0string = "0.0" //E0 is an input
     @State var E_maxstring = "10.0" //E would be an input.
     @State var E0 = 0.0
     @State var E_max = 30.0
     @State var E_step = 0.005
     @State var E_stepstring = "0.05" //also an input.
+    @State var plotType = ""
     
     
     
@@ -79,13 +81,22 @@ struct ContentView: View {
                     TextField("x-min", text: $x_minstring)
                     TextField("x-max", text: $x_maxstring)
                 }
-                Text("Enter energy Parameters")
+                Text("Enter energy parameters")
                 HStack {
                     TextField("E-step", text: $E_stepstring)
                     TextField("E-min", text: $E0string)
                     TextField("E-max", text: $E_maxstring)
                 }
                 HStack{
+                    VStack{
+                        List {
+                            Picker("Plot", selection: $myholdvariableinstance.selectedPlot) {
+                                Text("Potential").tag(HoldVariable.Plot.Potential)
+                                Text("Functional").tag(HoldVariable.Plot.Functional)
+                                Text("Wave Function").tag(HoldVariable.Plot.Wave_Function)
+                            }
+                        }
+                    }
                     VStack{
                         List {
                             Picker("Potential", selection: $myholdvariableinstance.selectedOrientation) {
@@ -99,16 +110,17 @@ struct ContentView: View {
                                     Text("Square Barrier").tag(HoldVariable.Orientation.Square_barrier)
                                     Text("Triangle Barrier").tag(HoldVariable.Orientation.Triangle_barrier)
                                     Text("Coupled Parabolic Well").tag(HoldVariable.Orientation.Coupled_Parabolic_Well)
-                                    Text("Coupled Square Well + Field").tag(HoldVariable.Orientation.Coupled_Square_Well_Field)
+                                    // Text("Coupled Square Well + Field").tag(HoldVariable.Orientation.Coupled_Square_Well_Field)
                                     Text("Harmonic Oscillator").tag(HoldVariable.Orientation.Harmonic_Oscillator)
-                                    Text("Kronig + Penney").tag(HoldVariable.Orientation.Kronig_penney)
-                                    Text("Variable Kronig - Penney").tag(HoldVariable.Orientation.Variable_Kronig)
-                                    Text("KP2-a").tag(HoldVariable.Orientation.KP2_a)
+                                    // Text("Kronig + Penney").tag(HoldVariable.Orientation.Kronig_penney)
+                                    // Text("Variable Kronig - Penney").tag(HoldVariable.Orientation.Variable_Kronig)
+                                    // Text("KP2-a").tag(HoldVariable.Orientation.KP2_a)
                                 }
-
+                                
                             }
                         }
                     }
+                
                 }
                 
                 Button(action: self.graph) {
@@ -118,6 +130,7 @@ struct ContentView: View {
                     Text("PrintAnswers")
                 }
             }
+        
             VStack{
                 Chart($plotData.plotArray[selector].plotData.wrappedValue) {
                     LineMark(
@@ -140,11 +153,32 @@ struct ContentView: View {
                     .foregroundColor(.red)
                 Text("Zeroes of the Function: ")
                 TextEditor(text: $outputText)
-                
-             }
             }
+            /*
+            
+            VStack{
+                Chart($plotData.plotArray[selector].plotData.wrappedValue) {
+                    LineMark(
+                        x: .value("Length", $0.xVal),
+                        y: .value("Potential", $0.yVal)
+                        
+                    )
+                    .foregroundStyle($plotData.plotArray[selector].changingPlotParameters.lineColor.wrappedValue)
+                    PointMark(x: .value("Position", $0.xVal), y: .value("Height", $0.yVal))
+                    
+                        .foregroundStyle($plotData.plotArray[selector].changingPlotParameters.lineColor.wrappedValue)
+                    
+                    
+                }
+                .chartYAxis {
+                    AxisMarks(position: .leading)
+                }
+                .padding()
+            }
+             */
             
         }
+    }
     
     func printAnswers(){
         print($mypotentialinstance.PotentialData.wrappedValue)
@@ -200,7 +234,9 @@ struct ContentView: View {
         E_max = Double(E_maxstring)!
         psi_prime_n = 5
         E_step = Double(E_stepstring)!
-        mypotentialinstance.getPotential(potentialType: myholdvariableinstance.selectedOrientation.rawValue, xMin: x_min, xMax: x_max, xStep: delta_x)
+        x_max = Double(x_maxstring)!
+        x_min = Double(x_minstring)!
+        
         
         
         mypotentialinstance.PotentialData = []
@@ -209,8 +245,11 @@ struct ContentView: View {
         mywavefxnvariableinstance.wavefxndoubleprimeData = []
         myfunctionalinstance.functionalData = []
         
-        mypotentialinstance.particleinaboxcalc(xmin: 0, xmax: length, delta_x: self.delta_x)
+     //   mypotentialinstance.particleinaboxcalc(xmin: x_min, xmax: x_max, delta_x: self.delta_x)
 //        print(mypotentialinstance.PotentialData)
+    //    print(myholdvariableinstance.selectedOrientation.rawValue)
+        mypotentialinstance.getPotential(potentialType: myholdvariableinstance.selectedOrientation.rawValue, xMin: x_min, xMax: x_max, xStep: self.delta_x)
+      
         
         
         for energy in stride(from: E0, to: E_max, by: E_step) {
@@ -267,8 +306,25 @@ struct ContentView: View {
         self.plotData.plotArray[0].plotData = []
         calculator.plotDataModel = self.plotData.plotArray[0]
         
-        for m in 0...myfunctionalinstance.functionalData.count-1{
-            calculator.appendDataToPlot(plotData: [(x: myfunctionalinstance.functionalData[m].energyPoint, y: myfunctionalinstance.functionalData[m].FunctionalPoint)])
+        
+        let plotType = myholdvariableinstance.selectedPlot.rawValue
+        
+        
+        switch plotType {
+        case "Functional":
+            for m in 0...myfunctionalinstance.functionalData.count-1{
+                calculator.appendDataToPlot(plotData: [(x: myfunctionalinstance.functionalData[m].energyPoint, y: myfunctionalinstance.functionalData[m].FunctionalPoint)])
+            }
+        case "Potential":
+            for m in 0...mypotentialinstance.PotentialData.count-1{
+                calculator.appendDataToPlot(plotData: [(x: mypotentialinstance.PotentialData[m].xPoint, y: mypotentialinstance.PotentialData[m].PotentialPoint)])
+            }
+        case "Wave_Function":
+            for m in 0...mywavefxnvariableinstance.wavefxnData.count-1{
+                calculator.appendDataToPlot(plotData: [(x: mywavefxnvariableinstance.wavefxnData[m].xPoint, y: mywavefxnvariableinstance.wavefxnData[m].PsiPoint)])
+            }
+        default:
+            Text("plot Type Error")
         }
         
         setObjectWillChange(theObject: self.plotData)
