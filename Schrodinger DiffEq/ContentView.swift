@@ -148,34 +148,14 @@ struct ContentView: View {
                 .chartYAxis {
                     AxisMarks(position: .leading)
                 }
+                .chartYScale(domain: $plotData.plotArray[selector].changingPlotParameters.yMin.wrappedValue...$plotData.plotArray[selector].changingPlotParameters.yMax.wrappedValue)
                 .padding()
                 Text($plotData.plotArray[selector].changingPlotParameters.xLabel.wrappedValue)
                     .foregroundColor(.red)
                 Text("Zeroes of the Function: ")
                 TextEditor(text: $outputText)
             }
-            /*
             
-            VStack{
-                Chart($plotData.plotArray[selector].plotData.wrappedValue) {
-                    LineMark(
-                        x: .value("Length", $0.xVal),
-                        y: .value("Potential", $0.yVal)
-                        
-                    )
-                    .foregroundStyle($plotData.plotArray[selector].changingPlotParameters.lineColor.wrappedValue)
-                    PointMark(x: .value("Position", $0.xVal), y: .value("Height", $0.yVal))
-                    
-                        .foregroundStyle($plotData.plotArray[selector].changingPlotParameters.lineColor.wrappedValue)
-                    
-                    
-                }
-                .chartYAxis {
-                    AxisMarks(position: .leading)
-                }
-                .padding()
-            }
-             */
             
         }
     }
@@ -315,11 +295,16 @@ struct ContentView: View {
             for m in 0...myfunctionalinstance.functionalData.count-1{
                 calculator.appendDataToPlot(plotData: [(x: myfunctionalinstance.functionalData[m].energyPoint, y: myfunctionalinstance.functionalData[m].FunctionalPoint)])
             }
+            calculator.plotDataModel!.changingPlotParameters.yMax = 20.0
+            calculator.plotDataModel!.changingPlotParameters.yMin = -5.0
         case "Potential":
             for m in 0...mypotentialinstance.PotentialData.count-1{
                 calculator.appendDataToPlot(plotData: [(x: mypotentialinstance.PotentialData[m].xPoint, y: mypotentialinstance.PotentialData[m].PotentialPoint)])
             }
-        case "Wave_Function":
+            calculator.plotDataModel!.changingPlotParameters.yMax = 20.0
+            calculator.plotDataModel!.changingPlotParameters.yMin = -5.0
+            
+        case "Wave_Function": //Doesn't work as is, just outputs garbage data. 
             for m in 0...mywavefxnvariableinstance.wavefxnData.count-1{
                 calculator.appendDataToPlot(plotData: [(x: mywavefxnvariableinstance.wavefxnData[m].xPoint, y: mywavefxnvariableinstance.wavefxnData[m].PsiPoint)])
             }
