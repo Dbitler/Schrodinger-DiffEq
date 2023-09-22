@@ -53,7 +53,7 @@ struct ContentView: View {
     @State var h_barc = 0.1973269804 //eV⋅μm
     
     @State var E0string = "0.0" //E0 is an input
-    @State var E_maxstring = "10.0" //E would be an input.
+    @State var E_maxstring = "30.0" //E would be an input.
     @State var E0 = 0.0
     @State var E_max = 30.0
     @State var E_step = 0.005
@@ -172,7 +172,7 @@ struct ContentView: View {
         
         
         mywavefxnvariableinstance.wavefxnData.append((xPoint: x_min, PsiPoint:  0.0))
-        mywavefxnvariableinstance.wavefxnprimeData.append((xPoint: x_min, PsiprimePoint: 7.0)) //Psiprimepoint is arbitrarily chosen number, could be anything
+       mywavefxnvariableinstance.wavefxnprimeData.append((xPoint: x_min, PsiprimePoint: 0.1)) //Psiprimepoint is arbitrarily chosen number, could be anything
         
         psi_doubleprime_n = C * mywavefxnvariableinstance.wavefxnData[0].PsiPoint * ( energy - mypotentialinstance.PotentialData[0].PotentialPoint)
         
@@ -212,7 +212,7 @@ struct ContentView: View {
         delta_x = Double(delta_xstring)!
          E0 = Double(E0string)!
         E_max = Double(E_maxstring)!
-        psi_prime_n = 5
+        psi_prime_n = 1
         E_step = Double(E_stepstring)!
         x_max = Double(x_maxstring)!
         x_min = Double(x_minstring)!
@@ -233,7 +233,7 @@ struct ContentView: View {
         
         
         for energy in stride(from: E0, to: E_max, by: E_step) {
-            let _ = calculatewavefxn(C, energy)
+            let bob = calculatewavefxn(C, energy)
            // print(mywavefxnvariableinstance.wavefxnData)
             
             
@@ -243,7 +243,7 @@ struct ContentView: View {
             myfunctionalinstance.functionalData.append((energyPoint: energy, FunctionalPoint: functionalpoint))
             //print(energy)
         }
-        //print(myfunctionalinstance.functionalData)
+       print(myfunctionalinstance.functionalData) //this is correct so far..
         
        
         
@@ -260,8 +260,8 @@ struct ContentView: View {
         for i in 0..<myfunctionalinstance.functionalData.count{
             newfunctionalData.append([myfunctionalinstance.functionalData[i].energyPoint, myfunctionalinstance.functionalData[i].FunctionalPoint])
         }
-
-        let answers = rootFinder(functionData: newfunctionalData, h: 0.0001, step: delta_x, C: C, function: calculatewavefxn)
+       //CONSTANT h IS DECLARED HERE.
+        let answers = rootFinder(functionData: newfunctionalData, h: 1E-14, step: delta_x, C: C, function: calculatewavefxn)
         
         for item in answers {
             mywavefxnvariableinstance.wavefxnData = []
@@ -340,10 +340,16 @@ struct ContentView: View {
      /// - Returns: deriviative of the function
    
     func calculateExtrapolatedDifference(functionToDifferentiate: extrapolatedDifferenceFunction, x: Double, h: Double, C: Double)-> (Double) {
+    
         delta_x = Double(delta_xstring)!
         //let h = delta_x
         //let C = -((2.0 * m_e) / pow(h_barc, 2.0)) * pow(1E-4,2)
-         let extrapolatedDifferenceDerivativeNumerator = 8.0 * ( functionToDifferentiate(C, x + (h/4.0)) - functionToDifferentiate(C, x - (h/4.0))) - (functionToDifferentiate(C, x + (h/2.0)) - functionToDifferentiate(C, x - (h/2.0)))
+        let term0 = functionToDifferentiate(C, x)
+        let term1 = functionToDifferentiate(C, x + (h/4.0)) //all return as NaN due to size of x.
+        let term2 = functionToDifferentiate(C, x - (h/4.0))
+        let term3 = functionToDifferentiate(C, x + (h/2.0))
+        let term4 = functionToDifferentiate(C, x - (h/2.0))
+         let extrapolatedDifferenceDerivativeNumerator = (8.0 * (term1 - term2) - (term3 - term4))
 
          let extrapolatedDifferenceDerivative = extrapolatedDifferenceDerivativeNumerator/(3.0*h)
 
@@ -368,7 +374,7 @@ struct ContentView: View {
             previousFunctionValue = item[1]
 
         }
-      // print(quickSearchResult) //not final roots, just area to search arround
+       print(quickSearchResult) //not final roots, just area to search arround
 
         //WORK ON THIS
 
@@ -379,16 +385,16 @@ struct ContentView: View {
             //Newton-Raphson Search
            for _ in 0...10 {
 
-                let newtonRaphsonNumerator = function(x, C)
+                let newtonRaphsonNumerator = function(C, x) //this gives too large of a number, need to fix -DB
 
                 // Extrapolated Difference
                 let newtonRaphsonDenominator = calculateExtrapolatedDifference(functionToDifferentiate: function, x: x, h: h, C: C)
 
-                let deltaX = -newtonRaphsonNumerator/newtonRaphsonDenominator
+               let deltaX = -newtonRaphsonNumerator/newtonRaphsonDenominator
                 x = x + deltaX
-
+//THIS SECTION IS PROBLEM. GIVING TOO LARGE OF NUMERATORS AND DENOMINATORS
                 if abs(deltaX) <= x.ulp {
-
+// if delta x is less than x, then append x to the final roots of x
                     break
 
                 }

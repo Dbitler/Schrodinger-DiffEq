@@ -61,12 +61,10 @@ class Potential: ObservableObject {
               
               startPotential(xMin: xMin, xMax: xMax, xStep: xStep)
               
-              for i in stride(from: xMin+xStep, through: xMax-xStep, by: xStep) {
+              for i in stride(from: xMin + xStep, through: xMax - xStep, by: xStep) {
                   
-                  PotentialData.append((xPoint: i, PotentialPoint: (i-xMin)*4.0*1.3))
+                PotentialData.append((xPoint: i, PotentialPoint: (i - xMin) * 4.0 * 1.3))
                   //PotentialData.oneDPotentialYArray.append((i-xMin)*0.25)
-                  
-                  
                   
               }
               
