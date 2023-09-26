@@ -53,7 +53,7 @@ struct ContentView: View {
     @State var h_barc = 0.1973269804 //eV⋅μm
     
     @State var E0string = "0.0" //E0 is an input
-    @State var E_maxstring = "30.0" //E would be an input.
+    @State var E_maxstring = "10.0" //E would be an input.
     @State var E0 = 0.0
     @State var E_max = 30.0
     @State var E_step = 0.005
@@ -291,18 +291,23 @@ struct ContentView: View {
         
         
         switch plotType {
+            
+            //functional updates the graph for square well, but not for any other potential.. very puzzling. FIX!!!-DB
         case "Functional":
             for m in 0...myfunctionalinstance.functionalData.count-1{
                 calculator.appendDataToPlot(plotData: [(x: myfunctionalinstance.functionalData[m].energyPoint, y: myfunctionalinstance.functionalData[m].FunctionalPoint)])
             }
-            calculator.plotDataModel!.changingPlotParameters.yMax = 20.0
+            calculator.plotDataModel!.changingPlotParameters.yMax = 5.0
             calculator.plotDataModel!.changingPlotParameters.yMin = -5.0
+    
         case "Potential":
             for m in 0...mypotentialinstance.PotentialData.count-1{
                 calculator.appendDataToPlot(plotData: [(x: mypotentialinstance.PotentialData[m].xPoint, y: mypotentialinstance.PotentialData[m].PotentialPoint)])
             }
-            calculator.plotDataModel!.changingPlotParameters.yMax = 20.0
-            calculator.plotDataModel!.changingPlotParameters.yMin = -5.0
+            calculator.plotDataModel!.changingPlotParameters.xMax = x_max
+            calculator.plotDataModel!.changingPlotParameters.xMin = x_min
+            calculator.plotDataModel!.changingPlotParameters.yMax = Double(mypotentialinstance.PotentialData[mypotentialinstance.PotentialData.count-2].PotentialPoint) + 2.0
+            calculator.plotDataModel!.changingPlotParameters.yMin = 0.0
             
         case "Wave_Function": //Doesn't work as is, just outputs garbage data. 
             for m in 0...mywavefxnvariableinstance.wavefxnData.count-1{

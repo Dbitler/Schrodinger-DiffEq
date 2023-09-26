@@ -58,10 +58,14 @@ class PlotDataClass: NSObject, ObservableObject {
         
     @MainActor func appendData(dataPoint: [(x: Double, y: Double)])
         {
-          
+          var dataValue :[PlotDataStruct] = []
             for item in dataPoint{
-                
-                let dataValue :[PlotDataStruct] =  [.init(xVal: item.x, yVal: item.y)]
+                if (item.y > 1.0E+5) {
+                    dataValue =  [.init(xVal: item.x, yVal: 100)]
+                }
+                else{
+                    dataValue =  [.init(xVal: item.x, yVal: item.y)]
+                }
                 
                 plotData.append(contentsOf: dataValue)
                 pointNumber += 1.0
