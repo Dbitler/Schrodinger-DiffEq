@@ -189,30 +189,30 @@ class Potential: ObservableObject {
               
               finishPotential(xMin: xMin, xMax: xMax, xStep: xStep)
           
-//          case "Coupled Square Well + Field":
-//              
-//          
-//              
-//              startPotential(xMin: xMin, xMax: xMax, xStep: xStep)
-//              
-//              for i in stride(from: xMin+xStep, to: xMin + (xMax-xMin)*0.4, by: xStep) {
-//                  
-//                  PotentialData.append((xPoint: i, PotentialPoint: 0.0))
-//                  
-//              }
-//              
-//              for i in stride(from: xMin + (xMax-xMin)*0.4, to: xMin + (xMax-xMin)*0.6, by: xStep) {
-//                  
-//                  PotentialData.append((xPoint: i, PotentialPoint: 4.0))
-//                  
-//              }
-//              
-//              for i in stride(from: xMin + (xMax-xMin)*0.6, to: xMax, by: xStep) {
-//                  
-//                  PotentialData.append((xPoint: i, PotentialPoint: 0.0))
-//      
-//              }
-//              
+          case "Coupled_Square_Well_Field":
+              
+          
+              
+              startPotential(xMin: xMin, xMax: xMax, xStep: xStep)
+              
+              for i in stride(from: xMin+xStep, to: xMin + (xMax-xMin)*0.4, by: xStep) {
+                  
+                  PotentialData.append((xPoint: i, PotentialPoint: 0.0))
+                  
+              }
+              
+              for i in stride(from: xMin + (xMax-xMin)*0.4, to: xMin + (xMax-xMin)*0.6, by: xStep) {
+                  
+                  PotentialData.append((xPoint: i, PotentialPoint: 4.0))
+                  
+              }
+              
+              for i in stride(from: xMin + (xMax-xMin)*0.6, to: xMax, by: xStep) {
+                  
+                  PotentialData.append((xPoint: i, PotentialPoint: 0.0))
+      
+              }
+              
 //              for i in 1 ..< (PotentialData.count) {
 //                  
 //                  PotentialData.oneDPotentialYArray[i] += ((PotentialData.oneDPotentialXArray[i]-xMin)*4.0*0.1)
@@ -221,7 +221,7 @@ class Potential: ObservableObject {
 //              
 //              
 //              finishPotential(xMin: xMin, xMax: xMax, xStep: xStep)
-          
+//          
           case "Harmonic Oscillator":
               
          
